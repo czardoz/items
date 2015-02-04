@@ -1,4 +1,5 @@
 import math
+import collections
 
 EARTH_RADIUS = 6371  # km
 
@@ -36,3 +37,13 @@ def calculate_distance_lightweight(location_one, location_two):
         math.cos(location_one.latitude/57.3)
     net_distance = math.sqrt(horizontal_distance**2 + vertical_distance**2)
     return net_distance
+
+
+def nested_update(orig, new_values):
+    for key, value in new_values.iteritems():
+        if isinstance(value, collections.Mapping):
+            r = nested_update(orig.get(key, {}), value)
+            orig[key] = r
+        else:
+            orig[key] = new_values[key]
+    return orig
