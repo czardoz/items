@@ -12,10 +12,13 @@ class ItemsTestCase(unittest.TestCase):
         self.app = items.app.test_client()
         self.mongoclient = MongoClient('mongodb://localhost:27017/')
         self.db = self.mongoclient['items_db']
+
+        # Clear db before populating it
+        self.clear_db()
         self.populate_db()
 
     def tearDown(self):
-        self.db.drop_collection('items')
+        self.clear_db()
 
     def test_update_nonexistant_item(self):
         updated_data = {
@@ -131,6 +134,9 @@ class ItemsTestCase(unittest.TestCase):
                 item_id = item['_id']
                 item['price_difference'] = item['original_price'] - item['price']
                 items_.update({'_id': item_id}, {'$set': item}, upsert=True)
+
+    def clear_db(self):
+        self.db.drop_collection('items')
 
 if __name__ == '__main__':
     unittest.main()

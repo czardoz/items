@@ -8,7 +8,6 @@ from flask.ext.pymongo import PyMongo
 from helpers import GeoLocation, calculate_distance, nested_update
 
 app = Flask('items_db')  # DB name is picked up from this by default
-app.debug = True
 mongo = PyMongo(app)
 logger = logging.getLogger(__name__)
 
