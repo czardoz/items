@@ -1,14 +1,16 @@
 import json
 import heapq
+import logging
 
 from flask import Flask, request, jsonify, Response
 from flask.ext.pymongo import PyMongo
 
-from helpers import GeoLocation, calculate_distance
+from helpers import GeoLocation, calculate_distance, nested_update
 
 app = Flask('items_db')  # DB name is picked up from this by default
 app.debug = True
 mongo = PyMongo(app)
+logger = logging.getLogger(__name__)
 
 
 @app.route('/items/<item_id>', methods=['GET', 'PATCH'])
@@ -19,7 +21,7 @@ def item_resource(item_id):
 
     if request.method == 'PATCH':
         item_data = json.loads(request.data)  # Load even without application/json header
-        item.update(item_data)
+        item = nested_update(item, item_data)
         item['price_difference'] = item['original_price'] - item['price']
         mongo.db.items.update({'_id': item_id}, {'$set': item}, upsert=False)
     return jsonify(item)
@@ -40,20 +42,36 @@ def nearest_n_items():
     distances_heap = []
     client_lat = request.args.get('lat', None)
     client_long = request.args.get('long', None)
-    client_location = GeoLocation(client_lat, client_long)
 
-    if not client_lat or not client_long:
+    if client_lat is None or client_long is None:
         return jsonify({'message': 'Latitude and longitude must be specified'}), 400
+
+    client_location = GeoLocation(client_lat, client_long)
 
     for item in mongo.db.items.find():
         item_location = GeoLocation(item['locality']['lat'], item['locality']['long'])
         distance = calculate_distance(client_location, item_location)
+        logger.debug('Calculated distance: {} --> {}'.format(item['_id'],  distance))
         heapq.heappush(distances_heap, (distance, item))
-    n = min(10, len(distances_heap))
+
+    n = min(3, len(distances_heap))
     nsmallest = heapq.nsmallest(n, distances_heap)
-    resp = Response(response=json.dumps(nsmallest), status=200, mimetype='application/json')
+
+    buffer_list = [item for _, item in nsmallest]
+    resp = Response(response=json.dumps(buffer_list), status=200, mimetype='application/json')
     return resp
 
+
+@app.route('/search/deals', methods=['GET'])
+def best_n_deals():
+    n = int(request.args.get('n', 0)) or 3
+    deals = mongo.db.items.find().sort('price_difference', -1).limit(n)
+    buffer_list = []
+    for deal in deals:
+        logger.debug('Found awesome deal: {} - {} discount'.format(deal['_id'], deal['price_difference']))
+        buffer_list.append(deal)
+    resp = Response(response=json.dumps(buffer_list), status=200, mimetype='application/json')
+    return resp
 
 if __name__ == '__main__':
     app.run()
