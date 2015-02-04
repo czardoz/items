@@ -1,5 +1,4 @@
 [
-
     {
         "createdAt": "2014-11-03T13:35:07.290Z",
         "description": "Test Item 1",
@@ -15,6 +14,23 @@
         ],
         "price": 9500,
         "original_price": 1200,
+        "purchase_year": 2010
+    },
+    {
+        "createdAt": "2014-11-03T13:35:07.290Z",
+        "description": "Test Item 9",
+        "locality": {
+            "lat": 22.094454,
+            "long": 55.586012
+        },
+        "name": "Test Item 9",
+        "_id": "item9",
+        "pics": [
+            "test_pic_1",
+            "test_pic_2"
+        ],
+        "price": 1,
+        "original_price": 100000,
         "purchase_year": 2010
     },
     {
@@ -35,6 +51,40 @@
         "purchase_year": 2014
     },
     {
+        "createdAt": "2014-11-03T15:35:07.290Z",
+        "description": "Test Item 10",
+        "locality": {
+            "lat": 22.948193,
+            "long": 55.597187
+        },
+        "name": "Test Item 10",
+        "_id": "item10",
+        "pics": [
+            "test_pic_3",
+            "test_pic_4"
+        ],
+        "price": 2,
+        "original_price": 200000,
+        "purchase_year": 2014
+    },
+    {
+        "createdAt": "2014-11-03T15:35:07.290Z",
+        "description": "Test Item 7",
+        "locality": {
+            "lat": 12.948199,
+            "long": 77.597182
+        },
+        "name": "Test Item 7",
+        "_id": "item7",
+        "pics": [
+            "test_pic_3",
+            "test_pic_4"
+        ],
+        "price": 1,
+        "original_price": 100,
+        "purchase_year": 2014
+    },
+    {
         "createdAt": "2015-01-03T15:35:07.290Z",
         "description": "Test Item 3",
         "locality": {
@@ -43,6 +93,23 @@
         },
         "name": "Test Item 3",
         "_id": "item3",
+        "pics": [
+            "test_pic_5",
+            "test_pic_6"
+        ],
+        "price": 8000,
+        "original_price": 11000,
+        "purchase_year": 2013
+    },
+    {
+        "createdAt": "2015-01-03T15:35:07.290Z",
+        "description": "Test Item 8",
+        "locality": {
+            "lat": 12.999966,
+            "long": 77.607418
+        },
+        "name": "Test Item 8",
+        "_id": "item8",
         "pics": [
             "test_pic_5",
             "test_pic_6"
@@ -86,37 +153,37 @@
         "purchase_year": 2015
     },
     {
-        "createdAt": "2014-01-15T15:35:07.290Z",
+        "createdAt": "2015-01-25T15:35:07.290Z",
         "description": "Test Item 6",
         "locality": {
-            "lat": 12.926923,
-            "long": 77.627108
+            "lat": 12.903333,
+            "long": 77.63121
         },
-        "name": "Test Item 4",
+        "name": "Test Item 6",
         "_id": "item6",
         "pics": [
-            "test_pic_7",
-            "test_pic_8"
+            "test_pic_9",
+            "test_pic_10"
         ],
-        "price": 3000,
-        "original_price": 5600,
-        "purchase_year": 2012
+        "price": 75012,
+        "original_price": 100,
+        "purchase_year": 2015
     },
     {
-        "createdAt": "2015-01-15T15:35:07.290Z",
-        "description": "Test Item 7",
+        "createdAt": "2015-01-25T15:35:07.290Z",
+        "description": "Test Item 11",
         "locality": {
-            "lat": 12.927923,
-            "long": 77.627108
+            "lat": 22.093333,
+            "long": 55.63121
         },
-        "name": "Test Item 4",
-        "_id": "item6",
+        "name": "Test Item 11",
+        "_id": "item11",
         "pics": [
-            "test_pic_7",
-            "test_pic_8"
+            "test_pic_9",
+            "test_pic_10"
         ],
-        "price": 3000,
-        "original_price": 5600,
-        "purchase_year": 2012
+        "price": 75012,
+        "original_price": 100,
+        "purchase_year": 2015
     }
 ]

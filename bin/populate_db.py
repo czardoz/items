@@ -21,7 +21,9 @@ if __name__ == '__main__':
         for item in data:
             item_id = item['_id']
             item['price_difference'] = item['original_price'] - item['price']
-            items.update({'_id': item_id}, {'$set': item}, upsert=False)
+            print 'Inserting item: {}'.format(item_id)
+            items.update({'_id': item_id}, {'$set': item}, upsert=True)
+
 
     print 'Insertion complete.'
     print 'Current items:'
