@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 #
-# Hornet - SSH Honeypot
+# Items - Mongo Project
 #
-# Copyright (C) 2014 Aniket Panse <aniketpanse@gmail.com>
+# Copyright (C) 2015 Aniket Panse <aniketpanse@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
