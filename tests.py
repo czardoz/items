@@ -4,10 +4,14 @@ import string
 import items
 import unittest
 
+from pymongo import MongoClient
+
 
 class ItemsTestCase(unittest.TestCase):
     def setUp(self):
         self.app = items.app.test_client()
+        self.mongoclient = MongoClient('mongodb://localhost:27017/')
+        self.db = self.mongoclient['items_db']
 
     def test_update_nonexistant_item(self):
         updated_data = {
@@ -59,6 +63,12 @@ class ItemsTestCase(unittest.TestCase):
         resp = self.app.get('/items/item1')
         updated_item = json.loads(resp.data)
         self.assertEquals(updated_item['description'], updated_desc)
+
+    def test_get_all_items(self):
+        expected_number_of_items = self.db.items.count()
+        resp = self.app.get('/items')
+        actual_number_of_items = len(json.loads(resp.data))
+        self.assertEquals(expected_number_of_items, actual_number_of_items)
 
 if __name__ == '__main__':
     unittest.main()
