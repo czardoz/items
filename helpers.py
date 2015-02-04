@@ -6,8 +6,8 @@ EARTH_RADIUS = 6371  # km
 class GeoLocation(object):
 
     def __init__(self, lat, long_):
-        self.latitude = lat
-        self.longitude = long_  # "long" is a defined class in python, so do not use it as a variable name.
+        self.latitude = float(lat)
+        self.longitude = float(long_)  # "long" is a defined class in python, so do not use it as a variable name.
 
 
 def calculate_distance(location_one, location_two):

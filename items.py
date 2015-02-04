@@ -1,9 +1,12 @@
 import json
+import heapq
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask.ext.pymongo import PyMongo
 
-app = Flask('items_db')
+from helpers import GeoLocation, calculate_distance
+
+app = Flask('items_db')  # DB name is picked up from this by default
 app.debug = True
 mongo = PyMongo(app)
 
@@ -23,8 +26,34 @@ def item_resource(item_id):
 
 
 @app.route('/items', methods=['GET'])
-def items():
-    pass
+def items_resource():
+    buffer_list = []
+    all_items = mongo.db.items.find()
+    for item in all_items:
+        buffer_list.append(item)
+    resp = Response(response=json.dumps(buffer_list), status=200, mimetype='application/json')
+    return resp
+
+
+@app.route('/search/nearest', methods=['GET'])
+def nearest_n_items():
+    distances_heap = []
+    client_lat = request.args.get('lat', None)
+    client_long = request.args.get('long', None)
+    client_location = GeoLocation(client_lat, client_long)
+
+    if not client_lat or not client_long:
+        return jsonify({'message': 'Latitude and longitude must be specified'}), 400
+
+    for item in mongo.db.items.find():
+        item_location = GeoLocation(item['locality']['lat'], item['locality']['long'])
+        distance = calculate_distance(client_location, item_location)
+        heapq.heappush(distances_heap, (distance, item))
+    n = min(10, len(distances_heap))
+    nsmallest = heapq.nsmallest(n, distances_heap)
+    resp = Response(response=json.dumps(nsmallest), status=200, mimetype='application/json')
+    return resp
+
 
 if __name__ == '__main__':
     app.run()
